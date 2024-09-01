@@ -1,0 +1,12 @@
+.side-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 100vh;
+  box-shadow: 0 0 10px rgba(177, 4, 4, 0.1);
+}
+
+.test {
+  color: rgb(216, 43, 43);
+}/*# sourceMappingURL=style.css.map */
