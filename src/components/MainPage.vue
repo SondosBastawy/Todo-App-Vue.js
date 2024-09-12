@@ -5,16 +5,13 @@
         <img src="../assets/images/icons8-todo-list-64.png" alt="" />
         <h2>Todo List</h2>
       </div>
-      <div class="btn">
-        <img src="../assets/images/sun_037.jpg" alt="" />
-      </div>
     </div>
     <div class="filterDiv">
       <div className="input-search">
         <img src="../assets/images/icons8-search-30.png" alt="" />
         <input
           type="text"
-          placeholder="search your note"
+          placeholder="Search your tasks"
           v-model="searchQuery"
           @input="updateSearchQuery"
         />
@@ -65,18 +62,27 @@ const updateSearchQuery = () => {
   flex-direction: row;
   justify-content: space-between;
   .header-title {
+    padding-top: 7px;
     h2 {
       text-align: center;
       padding: 2px;
+      color: $headers-title;
     }
   }
 }
+@media screen and (max-width: 768px) {
+  .main-content {
+    width: 100%;
+    font-size: 20px;
+  }
+}
+
 .btn {
   width: 105px;
   margin-right: 15px;
   background-color: white;
   height: 45px;
-  margin-top: 7px;
+  margin-top: 13px;
   border-radius: 30px;
   box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.601);
   border: none;
@@ -96,7 +102,7 @@ const updateSearchQuery = () => {
   align-items: center;
   padding-left: 10px;
   h2 {
-    color: #316fdb;
+    color: $headers-title;
   }
   img {
     width: 60px;

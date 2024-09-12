@@ -19,10 +19,12 @@
           {{ task.title }}
         </div>
         <div class="buttons">
-          <button @click="deleteTask(index)">
+          <button @click="deleteTask(index)" class="buttonDelete">
+            <span class="deleteSpan">Delete your task </span>
             <img src="../assets/images/icons8-delete-64.png" alt="" />
           </button>
-          <button @click="showUpdateModel(task, index)">
+          <button @click="showUpdateModel(task, index)" class="buttonUpdate">
+            <span class="updateSpan">Update your task </span>
             <img src="../assets/images/icons8-edit-30.png" alt="" />
           </button>
         </div>
@@ -39,7 +41,7 @@
       <div class="popup">
         <h3>Add your task</h3>
         <div class="popup-body">
-          <form @submit.prevent="addTask">
+          <form @submit.prevent="save">
             <div class="selectedCategoryDiv">
               <label for="">Select your category </label>
               <select
@@ -57,22 +59,24 @@
                 </option>
               </select>
             </div>
-            <form @submit.prevent="save">
-              <div class="adding-task">
-                <label for="input" title="Add your task ">Add your task</label>
-                <input
-                  type="text"
-                  placeholder="add your task"
-                  v-model="task_input"
-                />
-              </div>
-            </form>
+            <div class="adding-task">
+              <label for="input" title="Add your task ">Add your task</label>
+              <input
+                type="text"
+                placeholder="add your task"
+                v-model="task_input"
+              />
+            </div>
           </form>
           <div class="popup-buttons">
-            <button @click="save" class="save" v-if="isCreated">
+            <button @click="save" class="save" v-if="isCreated && !isUpdated">
               save your task
             </button>
-            <button @click="update()" class="update" v-if="isUpdated">
+            <button
+              @click="update()"
+              class="update"
+              v-if="isUpdated && !isCreated"
+            >
               update your task
             </button>
             <button @click="cancel" class="cancel">Cancel</button>
@@ -86,13 +90,6 @@
 import { computed, ref, watch } from "vue";
 import { useTaskStore } from "./Stores/TaskStore";
 import Categories from "./Categories.vue";
-
-const props = defineProps({
-  filterValues: String,
-  statusValues: String,
-  status: Array,
-  required: true,
-});
 
 const selectedCategory = ref({});
 const taskStore = useTaskStore();
@@ -126,12 +123,13 @@ const showUpdateModel = (task, index) => {
 // }
 
 const filteredTasks = computed(() => taskStore.getFilteredTasks);
-
 const statusFilter = computed(() => taskStore.getStatusFilter);
+
+//  Delete task function
 const deleteTask = (index) => {
-  taskStore.tasks.splice(index, 1);
+  tasks.value.splice(index, 1);
   // save data in local storage
-  localStorage.setItem("tasks", JSON.stringify(taskStore.tasks));
+  localStorage.setItem("tasks", JSON.stringify(tasks.value));
   window.alert("Are you sure you want to delete this task?");
 };
 // toggle completed
@@ -141,7 +139,7 @@ const toggleCompletion = (task) => {
     task.completed = !task.completed;
   }
   // save tasks with this state in local storage
-  localStorage.setItem("tasks", JSON.stringify(taskStore.tasks));
+  localStorage.setItem("tasks", JSON.stringify(tasks.value));
 };
 
 const save = () => {
@@ -149,16 +147,16 @@ const save = () => {
     const task = {
       title: task_input.value,
       completed: false,
-      id: taskStore.tasks.length + 1,
+      id: tasks.value.length + 1,
       categoryName: selectedCategory?.value?.title,
       categoryId: selectedCategory?.value?.id,
     };
-    taskStore.tasks.push(task);
-
+    tasks.value.push(task);
+    isCreated.value = false;
     task_input.value = "";
     isUpdated.value = false;
     // save data in local storage
-    localStorage.setItem("tasks", JSON.stringify(taskStore.tasks));
+    localStorage.setItem("tasks", JSON.stringify(tasks.value));
     showPopup.value = false;
   }
 };
@@ -172,6 +170,8 @@ function openCreateModal() {
 const cancel = () => {
   task_input.value = "";
   showPopup.value = false;
+  isCreated.value = false;
+  isUpdated.value = false;
 };
 function update() {
   const selectedId = taskStore.tasks[updateIndex.value].id;
@@ -190,6 +190,7 @@ function update() {
   showPopup.value = false;
   // isUpdated.value = false; // Uncomment if needed
   isCreated.value = false;
+  // isCreated.value = false;
   // Save data in local storage
   localStorage.setItem("tasks", JSON.stringify(taskStore.tasks));
 }
@@ -198,7 +199,7 @@ function update() {
 
 <style lang="scss">
 .title {
-  color: red;
+  color: #316fdb;
 }
 .show-popup {
   width: 120px;
@@ -275,7 +276,6 @@ function update() {
           padding: 4px 0px;
           display: flex;
           align-items: center;
-
           cursor: pointer;
           input {
             background-color: transparent;
@@ -323,6 +323,12 @@ function update() {
     }
   }
 }
+@media screen and (max-width: 768px) {
+  .displayData {
+    width: 100%;
+    font-size: 20px;
+  }
+}
 .completed {
   text-decoration: line-through;
   color: gray;
@@ -344,23 +350,72 @@ function update() {
     display: inline;
   }
   .buttons {
+    .buttonUpdate {
+      position: relative;
+      padding: 0px 4px;
+      .updateSpan {
+        width: 120px;
+        text-align: center;
+        padding: 5px 0;
+        position: absolute;
+        top: 45%;
+        left: 0;
+        visibility: hidden;
+        z-index: 1;
+        opacity: 0;
+        background-color: #8b8a8a;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        transition: opacity 0.3s;
+      }
+      &:hover .updateSpan {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+    .buttonDelete {
+      position: relative;
+      padding: 0px 3px;
+      .deleteSpan {
+        width: 120px;
+        text-align: center;
+        padding: 5px 0;
+        position: absolute;
+        top: 45%;
+        left: 0;
+        visibility: hidden;
+        z-index: 1;
+        opacity: 0;
+        background-color: #d01e1e;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        transition: opacity 0.3s;
+      }
+      &:hover .deleteSpan {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
     button {
       border: none;
       cursor: pointer;
       background-color: transparent;
       display: none;
-      img {
-        width: 30px;
-      }
+    }
+    img {
+      width: 30px;
     }
   }
-  input {
-    width: 20px;
-    height: 15px;
-    cursor: pointer;
-    padding-bottom: 5px;
-  }
 }
+input {
+  width: 20px;
+  height: 15px;
+  cursor: pointer;
+  padding-bottom: 5px;
+}
+
 .popup-content {
   background-color: white;
   padding: 20px;

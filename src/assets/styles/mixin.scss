@@ -1,0 +1,40 @@
+@mixin breakPoint($point) {
+    @if $point==mobile {
+        @media (max-width: 768px) {
+            @content;
+        }
+    }
+    @else if $point==small {
+        @media (min-width: 769px) and (max-width: 992px) {
+            @content;
+        }
+    }
+    @else if $point==medium {
+        @media (min-width: 993px) and (max-width: 1199px) {
+            @content;
+        }
+    }
+    @else if $point==large {
+        @media (min-width: 1200px) {
+            @content;
+        }
+    }
+}
+
+.media-query {
+    @include breakPoint(mobile) {
+        font-size: 16px;
+        width: 100%;
+    }
+    @include breakPoint(small) {
+        font-size: 18px;
+        width: 100%;
+        background-color: red;
+    }
+    @include breakPoint(medium) {
+        font-size: 20px;
+    }
+    @include breakPoint(large) {
+        font-size: 22px;
+    }
+}

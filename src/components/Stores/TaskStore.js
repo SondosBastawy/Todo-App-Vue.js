@@ -6,7 +6,7 @@ export const useTaskStore = defineStore("taskStore", {
       ? JSON.parse(localStorage.getItem("tasks"))
       : [],
     categories: [],
-    searchQuery: " ",
+    searchQuery: "",
     filteredTasks: [],
     statusFilter: "",
     filteredCategoryId: "",
@@ -30,7 +30,6 @@ export const useTaskStore = defineStore("taskStore", {
           return task.categoryId == state.filteredCategoryId;
         });
       }
-
       if (state.statusFilter !== "") {
         tasks = tasks.filter((task) => {
           return task.completed == state.statusFilter;
@@ -66,7 +65,8 @@ export const useTaskStore = defineStore("taskStore", {
     deleteCategory(id) {
       this.categories = this.categories.filter((item) => item.id != id);
       this.tasks = this.tasks.filter((task) => task.categoryId != id);
-
+      console.log(this.tasks);
+      console.log(this.tasks.filter((task) => task.categoryId != id));
       localStorage.setItem("categories", JSON.stringify(this.categories));
       localStorage.setItem("tasks", JSON.stringify(this.tasks));
     },

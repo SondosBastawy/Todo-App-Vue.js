@@ -56,7 +56,6 @@
           </div>
         </div>
       </div>
-      <!-- <button >add category</button> -->
     </div>
   </div>
 </template>
@@ -106,6 +105,7 @@ function openDeleteModal(id) {
 }
 const cancel = () => {
   deletePopup.value = false;
+  categoryPopup.value = false;
 };
 
 function deleteCategory(id) {
@@ -144,7 +144,7 @@ function showCategoryModel() {
     h2 {
       text-align: center;
       padding-top: 10px;
-      color: #316fdb;
+      color: $headers-title;
     }
     span {
       width: 120px;
@@ -162,16 +162,6 @@ function showCategoryModel() {
       border-radius: 6px;
       transition: opacity 0.3s;
     }
-    // &:after span {
-    //   content: "";
-    //   position: absolute;
-    //   top: 100%;
-    //   left: 50%;
-    //   margin-left: -5px;
-    //   border-width: 5px;
-    //   border-style: solid;
-    //   border-color: #555 transparent transparent transparent;
-    // }
     &:hover span {
       visibility: visible;
       opacity: 1;
@@ -239,7 +229,7 @@ function showCategoryModel() {
             height: 100%;
             border: 1px solid #888888;
             font-size: 1.25rem;
-            border-radius: 10px;
+            border-radius: 5px;
             padding: 1px;
             width: 100%;
             margin-left: 9px;
@@ -352,6 +342,22 @@ function showCategoryModel() {
         }
       }
     }
+  }
+}
+@media screen and (max-width: 768px) {
+  .nav-side {
+    height: 40%;
+    width: 100%;
+  }
+  .categories {
+    display: flex;
+    flex-direction: row;
+  }
+  .deleteCategoryPopup {
+    width: 100%;
+  }
+  .popup-addCategory {
+    width: 100%;
   }
 }
 .category {
