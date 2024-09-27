@@ -72,7 +72,7 @@ export const useTaskStore = defineStore("taskStore", {
     },
     filterTasksByCategory(id) {
       this.filteredCategoryId = id;
-      // console.log(this.filteredTasks);
+      console.log(this.filteredTasks);
     },
   },
 });
