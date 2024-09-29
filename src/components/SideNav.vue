@@ -89,7 +89,7 @@ const addCategory = () => {
   if (category_input.value !== "") {
     const category = {
       title: category_input.value,
-      id: categories.value[categories.value.length - 1].id + 1,
+      id: categories.value[categories.value.length - 1]?.id + 1 || 1,
     };
     taskStore.addCategory(category);
     category_input.value = "";
