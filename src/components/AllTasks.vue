@@ -19,7 +19,7 @@
           {{ task.title }}
         </div>
         <div class="buttons">
-          <button @click="deleteTask(index)" class="buttonDelete">
+          <button @click="deleteTask(task.id)" class="buttonDelete">
             <span class="deleteSpan">Delete your task </span>
             <img src="../assets/images/icons8-delete-64.png" alt="" />
           </button>
@@ -125,12 +125,13 @@ const showUpdateModel = (task, index) => {
 const filteredTasks = computed(() => taskStore.getFilteredTasks);
 const statusFilter = computed(() => taskStore.getStatusFilter);
 
+// const deletedTask = ref(null);
+
 //  Delete task function
-const deleteTask = (index) => {
-  tasks.value.splice(index, 1);
-  // save data in local storage
-  localStorage.setItem("tasks", JSON.stringify(tasks.value));
+const deleteTask = (id) => {
   window.alert("Are you sure you want to delete this task?");
+  console.log(id);
+  taskStore.deleteTask(id);
 };
 // toggle completed
 const toggleCompletion = (task) => {
@@ -147,7 +148,7 @@ const save = () => {
     const task = {
       title: task_input.value,
       completed: false,
-      id: tasks.value.length + 1,
+      id: tasks.value[tasks.value.length - 1]?.id + 1 || 1,
       categoryName: selectedCategory?.value?.title,
       categoryId: selectedCategory?.value?.id,
     };

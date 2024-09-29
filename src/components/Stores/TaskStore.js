@@ -57,6 +57,12 @@ export const useTaskStore = defineStore("taskStore", {
         return task;
       });
     },
+    deleteTask(id) {
+      this.tasks = this.tasks.filter((item) => item.id != id);
+      console.log(this.tasks.filter((item) => item.id != id));
+      console.log(id);
+      localStorage.setItem("tasks", JSON.stringify(this.tasks));
+    },
     addCategory(category) {
       console.log(this.categories);
       this.categories.push(category);
@@ -65,8 +71,7 @@ export const useTaskStore = defineStore("taskStore", {
     deleteCategory(id) {
       this.categories = this.categories.filter((item) => item.id != id);
       this.tasks = this.tasks.filter((task) => task.categoryId != id);
-      console.log(this.tasks);
-      console.log(this.categories);
+      console.log(id);
       localStorage.setItem("categories", JSON.stringify(this.categories));
       localStorage.setItem("tasks", JSON.stringify(this.tasks));
     },
