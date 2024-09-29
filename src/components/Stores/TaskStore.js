@@ -66,7 +66,7 @@ export const useTaskStore = defineStore("taskStore", {
       this.categories = this.categories.filter((item) => item.id != id);
       this.tasks = this.tasks.filter((task) => task.categoryId != id);
       console.log(this.tasks);
-      console.log(this.tasks.filter((task) => task.categoryId != id));
+      console.log(this.categories);
       localStorage.setItem("categories", JSON.stringify(this.categories));
       localStorage.setItem("tasks", JSON.stringify(this.tasks));
     },

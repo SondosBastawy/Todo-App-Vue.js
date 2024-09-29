@@ -248,6 +248,7 @@ function update() {
     h3 {
       text-align: center;
       font-size: 26px;
+      color: #316fdb;
     }
     .popup-body {
       display: flex;

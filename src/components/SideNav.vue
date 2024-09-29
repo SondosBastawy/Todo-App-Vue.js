@@ -18,7 +18,7 @@
         @click="filterTasksByCategory(category.id)"
       >
         <h4>{{ category.title }}</h4>
-        <button @click="openDeleteModal(category.id)">
+        <button @click.stop="openDeleteModal(category.id)">
           <img src="../assets/images/icons8-delete-64.png" alt="" />
         </button>
       </div>
@@ -89,7 +89,7 @@ const addCategory = () => {
   if (category_input.value !== "") {
     const category = {
       title: category_input.value,
-      id: categories.value.length + 1,
+      id: categories.value[categories.value.length - 1].id + 1,
     };
     taskStore.addCategory(category);
     category_input.value = "";
@@ -201,11 +201,13 @@ function showCategoryModel() {
     h3 {
       text-align: center;
       font-size: 26px;
+      color: $headers-title;
     }
     .popup-body {
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-direction: column;
       .select {
         width: 20%;
       }
@@ -222,7 +224,7 @@ function showCategoryModel() {
           align-items: center;
           cursor: pointer;
           label {
-            width: 70%;
+            width: 40%;
           }
           input {
             background-color: transparent;
@@ -252,8 +254,9 @@ function showCategoryModel() {
         }
         button {
           cursor: pointer;
-          border-radius: 6%;
+          border-radius: 9px;
           margin: 7px;
+          font-size: 16px;
           background-color: transparent;
           width: 100px;
           padding: 7px;
